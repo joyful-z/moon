@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#171124" />
+  <meta name="description" content="墨紫塔罗：在安静的片刻，抽一张牌，听见自己的心声。" />
+  <title>墨紫塔罗 · 在牌面之间，遇见自己的答案</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./styles.css" />
+  <script src="./app.js" defer></script>
+</head>
+<body>
+  <div class="ambient ambient-one" aria-hidden="true"></div>
+  <div class="ambient ambient-two" aria-hidden="true"></div>
+  <div class="stars" aria-hidden="true"></div>
+  <div class="site-shell">
+    <header class="site-header">
+      <button class="brand" type="button" data-action="home" aria-label="返回首页">
+        <span class="brand-mark" aria-hidden="true">☾</span>
+        <span class="brand-name">墨紫塔罗 <small>MOZI TAROT</small></span>
+      </button>
+      <nav class="top-nav" aria-label="主导航">
+        <button type="button" data-action="home">首页</button>
+        <button type="button" data-action="guide">占卜指引</button>
+        <button type="button" class="nav-oracle" data-action="start">开启占卜 <span aria-hidden="true">↗</span></button>
+      </nav>
+    </header>
+    <main id="app" tabindex="-1"></main>
+    <footer class="site-footer">
+      <span>© 2026 墨紫塔罗</span>
+      <span>把答案留给自己，把时间留给此刻。</span>
+      <span>塔罗解读用于自我探索与娱乐，不替代专业建议。</span>
+    </footer>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
