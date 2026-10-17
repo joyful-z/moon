@@ -3,5 +3,8 @@
   "private": true,
   "type": "module",
   "engines": {"node": ">=20"},
-  "scripts": {"start": "node server.mjs"}
+  "scripts": {
+    "start": "node server.mjs",
+    "build:pages": "node scripts/build-pages-data.mjs"
+  }
 }

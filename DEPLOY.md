@@ -1,14 +1,11 @@
-# 月隐先知：让其他设备访问
+# 月隐先知：免费公网部署
 
-本项目需要 Node.js 服务：它同时提供网页、星盘计算和 Qwen 解读接口。仅上传 `dist/` 或分享本机 `127.0.0.1` 地址，会导致部分功能不可用。
+使用 Cloudflare Pages 的 GitHub 集成部署本项目。网页由 Pages 提供；`functions/api/` 负责星盘计算及 Qwen 解读。`127.0.0.1` 只供本机使用。
 
-## 使用 Render 部署
+1. 登录 Cloudflare，进入 **Workers & Pages → Create application → Pages → Connect to Git**，授权它访问 GitHub 仓库 `joyful-z/moon`。
+2. 选择 `main` 分支，项目名称可填 `moon-veil-oracle`。Framework preset 选择 **None**；Build command 填 `node scripts/build-pages-data.mjs`；Build output directory 填 `dist`；Root directory 保持仓库根目录。
+3. 点击 **Save and Deploy**。首次部署会给出 `https://<项目名>.pages.dev` 地址。无需在代码或 GitHub 中保存 Qwen 密钥。
+4. 在该 Pages 项目里打开 **Settings → Variables and Secrets → Add**，新增 `QWEN_API_KEY`，选择 **Encrypt** 并填写密钥，作用环境选 **Production**。建议更换此前在聊天中发送过的旧密钥。保存后重新部署最新提交，让 Functions 获取新密钥。
+5. 打开 `https://<项目名>.pages.dev/api/status`，确认 `ready` 与 `qwenConfigured` 都为 `true`；再用手机移动网络测试首页、星盘和 AI 解读。
 
-1. 在 GitHub 创建**私有仓库**，将此项目整个目录推送进去。确认 `.secrets/` 没有进入提交；`QWEN_API_KEY` 不得写入代码或 `render.yaml`。
-2. 登录 Render，选择 **New → Web Service**，连接这个 GitHub 仓库。选择 `main` 分支、Node 运行环境、Singapore 区域和 **Free** 实例；构建命令填写 `npm install --omit=dev`，启动命令填写 `npm start`。
-3. 在 **Advanced → Environment Variables** 添加 `QWEN_API_KEY`。建议先在阿里云百炼控制台重新生成密钥，停用曾经在聊天中发送过的旧密钥。密钥只填在 Render 环境变量中。健康检查路径可填写 `/api/status`。
-4. 等待部署成功，打开 Render 给出的 `https://…onrender.com` 地址。通过手机移动网络测试首页、星盘和 AI 解读，再把该地址分享给别人。
-
-本项目会自动使用 Render 提供的 `PORT` 和 `RENDER_EXTERNAL_URL`，无需把公网地址写进代码。`/api/status` 可用于检查服务：`ready` 和 `qwenConfigured` 应为 `true`。
-
-免费 Web Service 闲置后会休眠，第一次访问可能等待约一分钟；Qwen 调用仍按阿里云的账户规则计费。正式对外推广时，建议配置 API 用量限制并考虑付费实例。自有域名可以在 Render 的服务设置中添加。
+本机仍可用 `npm start` 运行原有 Node 服务。Pages 的构建脚本会从 `dist` 自动生成 API 所需数据，不需要提交 `pages-data.mjs`。不要把 `.secrets/`、`.dev.vars` 或 `.env` 提交到 GitHub。
