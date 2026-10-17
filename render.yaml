@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: moon-veil-oracle
+    runtime: node
+    plan: free
+    buildCommand: npm install --omit=dev
+    startCommand: npm start
+    healthCheckPath: /api/status
+    envVars:
+      - key: QWEN_API_KEY
+        sync: false
