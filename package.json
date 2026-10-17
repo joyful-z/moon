@@ -5,7 +5,7 @@
   "engines": {"node": ">=20"},
   "scripts": {
     "start": "node server.mjs",
-    "build": "node scripts/build-pages-data.mjs",
+    "build": "node scripts/build-pages-data.mjs && node scripts/build-site.mjs",
     "build:pages": "node scripts/build-pages-data.mjs"
   }
 }
