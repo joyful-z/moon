@@ -3,6 +3,7 @@ services:
     name: moon-veil-oracle
     runtime: node
     plan: free
+    region: singapore
     buildCommand: npm install --omit=dev
     startCommand: npm start
     healthCheckPath: /api/status
