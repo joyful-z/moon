@@ -1,11 +1,12 @@
-# 月隐先知：免费公网部署
+# 月隐先知：Cloudflare Worker 部署
 
-使用 Cloudflare Pages 的 GitHub 集成部署本项目。网页由 Pages 提供；`functions/api/` 负责星盘计算及 Qwen 解读。`127.0.0.1` 只供本机使用。
+现有 GitHub 仓库 `joyful-z/moon` 已连接 Cloudflare Worker `moon`。仓库根目录的 `wrangler.jsonc` 指定网页静态文件和 `/api/*` 接口，推送到 `main` 后由 Cloudflare 自动重新部署。
 
-1. 登录 Cloudflare，进入 **Workers & Pages → Create application → Pages → Connect to Git**，授权它访问 GitHub 仓库 `joyful-z/moon`。
-2. 选择 `main` 分支，项目名称可填 `moon-veil-oracle`。Framework preset 选择 **None**；Build command 填 `node scripts/build-pages-data.mjs`；Build output directory 填 `dist`；Root directory 保持仓库根目录。
-3. 点击 **Save and Deploy**。首次部署会给出 `https://<项目名>.pages.dev` 地址。无需在代码或 GitHub 中保存 Qwen 密钥。
-4. 在该 Pages 项目里打开 **Settings → Variables and Secrets → Add**，新增 `QWEN_API_KEY`，选择 **Encrypt** 并填写密钥，作用环境选 **Production**。建议更换此前在聊天中发送过的旧密钥。保存后重新部署最新提交，让 Functions 获取新密钥。
-5. 打开 `https://<项目名>.pages.dev/api/status`，确认 `ready` 与 `qwenConfigured` 都为 `true`；再用手机移动网络测试首页、星盘和 AI 解读。
+1. 在 Cloudflare 的 **Workers & Pages → moon → Deployments** 查看最新构建是否成功。公开网址是 `https://moon.zhaojiayi200402.workers.dev/`。
+2. 打开 `https://moon.zhaojiayi200402.workers.dev/api/status`。`ready: true` 表示接口已上线；`qwenConfigured: false` 表示还需配置 AI 密钥。
+3. 在 **moon → Settings → Variables and Secrets** 新增运行时 Secret `QWEN_API_KEY`，填入 Qwen API Key。建议先轮换之前在聊天中发出的旧密钥。不要把密钥放进 GitHub、构建命令或公开网页。
+4. 保存 Secret 后再次打开 `/api/status`，确认 `qwenConfigured: true`。用手机移动网络试用首页、星盘和 AI 解读。
 
-本机仍可用 `npm start` 运行原有 Node 服务。Pages 的构建脚本会从 `dist` 自动生成 API 所需数据，不需要提交 `pages-data.mjs`。不要把 `.secrets/`、`.dev.vars` 或 `.env` 提交到 GitHub。
+Worker 构建命令可留空；默认部署命令 `npx wrangler deploy` 会读取 `wrangler.jsonc`。仓库已包含生成后的牌义与卦象数据。若需要重新生成，在仓库根目录运行 `npm run build` 并提交更新后的 `pages-data.mjs`。
+
+本机仍可执行 `npm start`，打开 `http://127.0.0.1:4173/`。`functions/api/` 同时保留 Cloudflare Pages 兼容性。
